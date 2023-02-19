@@ -1,0 +1,55 @@
+h4 {
+    margin: 0;
+}
+
+ul, ol {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+ul {
+    min-height: 12.9em;
+}
+
+li {
+    text-align: center;
+    display: inline-block;
+    padding-bottom: 1em;
+}
+
+section {
+    border-left: 0.5em solid rgba(0, 0, 0, 0.2);
+    padding-left: 0.6em;
+}
+
+.drawn {
+    min-height: 0;
+}
+
+.drawnNumber {
+    width: 2em;
+    text-align: center;
+    border: 1px solid red;
+    line-height: 2;
+    padding: 0;
+    border-radius: 50%;
+}
+
+.ticketNumbers {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    border: 1px solid grey;
+    width: 10em;
+    text-align: center;
+    line-height: 2;
+}
+
+.num {
+    border: 1px solid transparent;
+    border-radius: 50%;
+}
+
+.marked {
+    border: 1px solid red;
+}
