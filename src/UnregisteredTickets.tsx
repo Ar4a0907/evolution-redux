@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Ticket } from "./Ticket.js";
-import {generateRandomTicket, random, randomName} from "./utils.js";
+import {generateRandomTicket, randomName} from "./utils.js";
 import {useCallback} from "react";
 import {useDispatch} from "react-redux";
 

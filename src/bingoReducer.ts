@@ -6,51 +6,46 @@ const initialState: BingoState = {
     winners: [],
 };
 
-function checkWinner(players: readonly{ name: string; ticket: BingoTicket; }[], numbersDrawn: readonly number[], stateWinners: readonly string[]): string[] {
+function checkWinner(players: readonly { name: string; ticket: BingoTicket }[], numbersDrawn: readonly number[], stateWinners: readonly string[]): string[] {
     const winners: string[] = []
-    if(numbersDrawn.length >= 4) {
-        const checkIfWinner = (ticket: BingoTempTicket, numbers:readonly number[]) => {
-            const mainDiagonal: number[] = []
-            const secondaryDiagonal: number[] = []
-            for(let i = 0; i < ticket.length; i++) {
-                const column: number[] = []
-                const row: number[] = []
-                for(let j = 0; j < ticket[i].length; j++) {
-                    if(i === 2 && j===2)
-                        continue
+    if (numbersDrawn.length < 4) {
+        return winners
+    }
+
+    function hasLine(line: readonly number[], numbers: readonly number[]): boolean {
+        return line.every(number => numbers.includes(number))
+    }
+
+    function getLines(ticket: BingoTempTicket): readonly number[][] {
+        const lines: number[][] = []
+        for (let i = 0; i < ticket.length; i++) {
+            const column: number[] = []
+            const row: number[] = []
+            for (let j = 0; j < ticket[i].length; j++) {
+                if (i !== 2 || j !== 2) {
                     column.push(ticket[j][i])
                     row.push(ticket[i][j])
-
-                    if(j === i)
-                        mainDiagonal.push(ticket[i][j])
-                    if (i + j === ticket.length - 1)
-                        secondaryDiagonal.push(ticket[i][j])
                 }
-                if(row.every(number => numbers.includes(number)))
-                    return true
-                if(column.every(number => numbers.includes(number)))
-                    return true
             }
-            if(mainDiagonal.every(number => numbers.includes(number)))
-                return true
-            if(secondaryDiagonal.every(number => numbers.includes(number)))
-                return true
-
-            return false
+            lines.push(column, row)
         }
-
-        players.map(player => {
-            let isWinner = false
-            const tempTicket = createTempTicket(player.ticket)
-
-            if(checkIfWinner(tempTicket, numbersDrawn)) {
-                isWinner = true;
-            }
-
-            if(isWinner && !stateWinners.includes(player.name))
-                winners.push(player.name)
-        })
+        const mainDiagonal = [ticket[0][0], ticket[1][1], ticket[3][3], ticket[4][4]]
+        const secondaryDiagonal = [ticket[0][4], ticket[1][3], ticket[3][1], ticket[4][0]]
+        lines.push(mainDiagonal, secondaryDiagonal)
+        return lines
     }
+
+    players.forEach(player => {
+        if (stateWinners.includes(player.name)) {
+            return
+        }
+        const tempTicket = createTempTicket(player.ticket)
+        const lines = getLines(tempTicket)
+        if (lines.some(line => hasLine(line, numbersDrawn))) {
+            winners.push(player.name)
+        }
+    })
+
     return winners
 }
 
@@ -60,15 +55,12 @@ function isTicketValid(ticket: BingoTicket): boolean {
         const columnNumbers: number[] = [];
         for (let row = 0; row < tempTicket.length; row++) {
             if(col === 2 && row === 2)
-                ++col
+                continue
             const number = tempTicket[row][col];
             if (columnNumbers.includes(number)) {
                 return false;
             }
             columnNumbers.push(number);
-        }
-        if (columnNumbers.length !== tempTicket.length) {
-            return false;
         }
     }
     return true;
