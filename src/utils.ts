@@ -44,6 +44,6 @@ function isValid(ticket: BingoTicket) {
     return ticketNumbers.length === uniqueTicketNumbers.length;
 }
 
-function random(from: number, to: number) {
+export function random(from: number, to: number) {
     return from + Math.floor(Math.random() * (to - from));
 }

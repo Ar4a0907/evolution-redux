@@ -14,6 +14,14 @@ export type BingoTicket = [
     [NumberIn1stCol, NumberIn2ndCol, NumberIn3rdCol, NumberIn4thCol, NumberIn5thCol],
 ]
 
+export type BingoTempTicket = [
+    [NumberIn1stCol, NumberIn2ndCol, NumberIn3rdCol, NumberIn4thCol, NumberIn5thCol],
+    [NumberIn1stCol, NumberIn2ndCol, NumberIn3rdCol, NumberIn4thCol, NumberIn5thCol],
+    [NumberIn1stCol, NumberIn2ndCol,      number   , NumberIn4thCol, NumberIn5thCol],
+    [NumberIn1stCol, NumberIn2ndCol, NumberIn3rdCol, NumberIn4thCol, NumberIn5thCol],
+    [NumberIn1stCol, NumberIn2ndCol, NumberIn3rdCol, NumberIn4thCol, NumberIn5thCol],
+]
+
 export type BingoAction =
     | { type: "registered", payload: { name: string, ticket: BingoTicket } }
     | { type: "numberDrawn", payload: BingoNumber }

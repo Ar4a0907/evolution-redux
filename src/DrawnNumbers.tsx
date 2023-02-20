@@ -1,7 +1,20 @@
 import * as React from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {BingoState} from "./types";
+import {useCallback} from "react";
+import {random} from "./utils";
 
 export function DrawnNumbers() {
-    const drawnNumbers: number[] = [11, 8, 54, 30];
+    const drawnNumbers = useSelector((state:BingoState)=> state.numbersDrawn)
+    const dispatch = useDispatch()
+
+    const buttonCallback = useCallback(() => {
+      dispatch({
+        type: 'numberDrawn',
+        payload: random(1, 75)
+      })
+    },[])
+
     return (
         <section data-role="drawn-numbers">
             <h3>Drawn numbers</h3>
@@ -12,7 +25,7 @@ export function DrawnNumbers() {
                     </li>
                 ))}
             </ul>
-            <button>Draw number</button>
+            <button onClick={buttonCallback}>Draw number</button>
         </section>
     );
 }
